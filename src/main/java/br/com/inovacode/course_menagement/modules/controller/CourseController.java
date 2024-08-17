@@ -5,14 +5,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.inovacode.course_menagement.modules.entities.CourseEntity;
+import jakarta.validation.Valid;
+
 
 @RestController
-@RequestMapping
+@RequestMapping("course")
 public class CourseController {
     
-    @PostMapping("path")
-    public void create(@RequestBody String entity) {
-        //TODO: process POST request
+    @PostMapping("/")
+    public void create(@Valid @RequestBody CourseEntity courseEntity) {
+        System.out.println("Course");
+        System.out.println(courseEntity.getId());
     }
-    
 }
