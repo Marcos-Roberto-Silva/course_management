@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import br.com.inovacode.course_menagement.modules.entities.CourseEntity;
 
 public interface CourseRepository extends JpaRepository<CourseEntity, UUID>{
-    Optional<CourseEntity>  findByName(String name);
+    Optional<CourseEntity> findByName(String name);
     List<CourseEntity> findAll();
 }
