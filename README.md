@@ -1,4 +1,5 @@
 ## How to Run This Project
+### command on terminal: mvn spring-boot:run
 ### Prerequisites
 #### Install Docker on your machine.
 #### Docker Commands
