@@ -33,4 +33,10 @@ public class ExceptionHandlerController {
 
         return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(InvalidCourseStatusException.class)
+    public ResponseEntity<ErrorMessageDTO> handleInvalidCourseStatusException(InvalidCourseStatusException e) {
+        ErrorMessageDTO error = new ErrorMessageDTO(e.getMessage(), e.getField());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }

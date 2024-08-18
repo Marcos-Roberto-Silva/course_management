@@ -15,8 +15,7 @@ public class DeleteCourseController {
     private CourseUseCase courseUseCase;
 
     @DeleteMapping("/{id}/")
-    public ResponseEntity<Object> delete(
-            @PathVariable UUID id) {
+    public ResponseEntity<Object> deleteCourse(@PathVariable UUID id) {
         try {
             this.courseUseCase.deleteCourse(id);
             return ResponseEntity.noContent().build();

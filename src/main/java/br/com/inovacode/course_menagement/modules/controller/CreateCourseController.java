@@ -19,10 +19,12 @@ public class CreateCourseController {
     private CourseUseCase courseUseCase;
 
     @PostMapping("/")
-    public ResponseEntity<Object> create(@Valid @RequestBody CourseEntity courseEntity) {
+    public ResponseEntity<Object> createCourse(@Valid @RequestBody CourseEntity courseEntity) {
         try {
-          var result = this.courseUseCase.execute(courseEntity);
-          return ResponseEntity.ok().body(result);
+            CourseEntity createCourse = this.courseUseCase.execute(courseEntity);
+            return ResponseEntity.ok().body(createCourse);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

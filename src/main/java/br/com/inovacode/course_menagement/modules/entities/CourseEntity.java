@@ -2,14 +2,16 @@ package br.com.inovacode.course_menagement.modules.entities;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import br.com.inovacode.course_menagement.CourseStatusEnum.CourseStatus;
+import br.com.inovacode.course_menagement.utils.CourseStatusDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+
 
 
 @Data
@@ -24,12 +26,15 @@ public class CourseEntity {
 
     @NotBlank(message = "category is a mandatory field")
     private String category;
-
-    private Boolean active;
+    
+    @JsonDeserialize(using = CourseStatusDeserializer.class)
+    private CourseStatus active;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime created_at;
 
-    @CreationTimestamp
+    @UpdateTimestamp
+    @Column(updatable = false)
     private LocalDateTime updated_at;
 }

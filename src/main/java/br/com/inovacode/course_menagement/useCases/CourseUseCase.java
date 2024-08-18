@@ -1,6 +1,8 @@
 package br.com.inovacode.course_menagement.useCases;
 
+import br.com.inovacode.course_menagement.CourseStatusEnum.CourseStatus;
 import br.com.inovacode.course_menagement.exceptions.CourseNotFoundException;
+import br.com.inovacode.course_menagement.exceptions.NoCoursesFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ public class CourseUseCase {
     private CourseRepository courseRepository;
 
     public CourseEntity execute(CourseEntity courseEntity) {
+        validateCourseStatus(courseEntity.getActive());
+
         this.courseRepository.findByName(courseEntity.getName())
                 .ifPresent((course) -> {
                     throw new CourseFoundException("Course already registered");
@@ -27,7 +31,14 @@ public class CourseUseCase {
     }
 
     public CourseEntity updateCourse(UUID id, CourseEntity courseEntity) {
+        validateCourseStatus(courseEntity.getActive());
+
         Optional<CourseEntity> existingCourseOpt = courseRepository.findById(id);
+
+        this.courseRepository.findByName(courseEntity.getName())
+                .ifPresent((course) -> {
+                    throw new CourseFoundException("Course already registered");
+                });
 
         if (existingCourseOpt.isPresent()) {
             CourseEntity existingCourse = existingCourseOpt.get();
@@ -35,6 +46,7 @@ public class CourseUseCase {
             existingCourse.setName(courseEntity.getName());
             existingCourse.setCategory(courseEntity.getCategory());
             existingCourse.setActive(courseEntity.getActive());
+
             return courseRepository.save(existingCourse);
         } else {
             throw new CourseNotFoundException("Course with ID " + id + " not registered.");
@@ -52,6 +64,22 @@ public class CourseUseCase {
     }
 
     public List<CourseEntity> getCourses() {
-        return this.courseRepository.findAll();
+       List<CourseEntity> courses = this.courseRepository.findAll();
+
+       if (courses.isEmpty()) {
+           throw new NoCoursesFoundException("No courses found.");
+       }
+
+       return courses;
+    }
+
+    private void validateCourseStatus(CourseStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("Course status must not be null.");
+        }
+
+        if (!CourseStatus.ACTIVE.equals(status) && !CourseStatus.INACTIVE.equals(status)) {
+            throw new IllegalArgumentException("Invalid course status: " + status);
+        }
     }
 }
