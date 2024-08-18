@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("update/course")
-public class UpdateCourse {
+@RequestMapping("course")
+public class UpdateCourseController {
     @Autowired
     private CourseUseCase courseUseCase;
 

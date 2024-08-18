@@ -21,10 +21,8 @@ public class CourseUseCase {
     public CourseEntity execute(CourseEntity courseEntity) {
         this.courseRepository.findByName(courseEntity.getName())
                 .ifPresent((course) -> {
-                    throw new CourseFoundException();
+                    throw new CourseFoundException("Course already registered");
                 });
-
-
         return this.courseRepository.save(courseEntity);
     }
 
